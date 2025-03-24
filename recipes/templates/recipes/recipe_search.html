@@ -1,0 +1,59 @@
+{% extends "base.html" %} {% block content %}
+
+<div class="max-w-4xl mx-auto bg-white p-8 rounded-3xl shadow-2xl mt-10 border border-gray-300">
+  <!-- ヘッダー -->
+  <h2 class="text-3xl font-extrabold text-gray-800 text-center border-b-4 border-orange-400 pb-4">
+    レシピ検索
+  </h2>
+
+  <!-- 検索フォーム -->
+  <form method="GET" action="{% url 'recipes:recipe_search' %}" class="flex space-x-4" style="margin-top:20px ">
+    <input
+      type="text"
+      name="q"
+      placeholder="レシピ名・材料名で検索"
+      value="{{ query }}"
+      class="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-orange-400 focus:outline-none"
+    />
+    <button
+      type="submit"
+      class="bg-orange-500  text-white py-3 px-6 rounded-lg font-semibold hover:bg-orange-600 transition"
+      style="width: 100px; margin-left:20px" 
+    >
+      検索
+    </button>
+  </form>
+
+  <!-- 検索結果 -->
+  <div class="mt-10">
+    {% if results %}
+    <h3 class="text-2xl font-semibold text-gray-800 border-b-2 pb-2">検索結果</h3>
+    <ul class="mt-4 space-y-4">
+      {% for recipe in results %}
+      <li class="bg-gray-100 p-4 rounded-xl shadow">
+        <a
+          href="{% url 'recipes:recipe_detail' pk=recipe.pk %}"
+          class="text-lg font-semibold text-blue-600 hover:underline"
+        >
+          {{ recipe.title }}
+        </a>
+      </li>
+      {% endfor %}
+    </ul>
+    {% else %}
+    <p class="text-gray-600 italic mt-4">該当するレシピが見つかりませんでした。</p>
+    {% endif %}
+  </div>
+</div>
+<!-- ホームボタン -->
+<div class="flex justify-center mt-10">
+  <a href="{% url 'users:home' %}">
+    <button
+      class="text-lg bg-gray-600 text-white py-3 px-6 hover:bg-gray-700 transition shadow-md text-center rounded-xl"
+    >
+      ホーム
+    </button>
+  </a>
+</div>
+
+{% endblock %}

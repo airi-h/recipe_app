@@ -1,0 +1,37 @@
+{% extends "base.html" %} {% block content %}
+
+<div class="max-w-3xl mx-auto bg-white p-8 rounded-3xl shadow-2xl mt-10 border border-gray-300">
+  <!-- ヘッダー -->
+  <h2 class="text-3xl font-extrabold text-gray-800 text-center border-b-4 border-orange-400 pb-4">
+    プロフィール
+  </h2>
+
+  <!-- プロフィール情報 -->
+  <div class="mt-6 text-lg text-gray-700" style="margin-top:20px">
+    <p class="border-b pb-2"><span class="font-semibold">ユーザー名:</span> {{ user.user_name }}</p>
+    <p class="border-b pb-2 mt-4">
+      <span class="font-semibold">メールアドレス:</span> {{ user.email }}
+    </p>
+  </div>
+
+  <!-- アクションボタン -->
+  <div class="flex justify-between" style="margin-top: 20px">
+    <a href="{% url 'users:profile_update' %}">
+      <button
+        class="bg-blue-600 text-white py-3 px-6 rounded-xl shadow-md hover:bg-blue-700 transition"
+      >
+        プロフィール編集
+      </button>
+    </a>
+
+    <a href="{% url 'users:home' %}">
+      <button
+        class="bg-gray-600 text-white py-3 px-6 rounded-xl shadow-md hover:bg-gray-700 transition"
+      >
+        ホームに戻る
+      </button>
+    </a>
+  </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,144 @@
+{% extends "base.html" %} {% block content %}
+<div
+  class="max-w-6xl mx-auto px-8 md:px-16 bg-white shadow-2xl rounded-3xl mt-10 border border-gray-300 p-10"
+>
+  <!-- レシピタイトル -->
+  <h1 class="text-4xl font-extrabold text-gray-800 text-center border-b-4 border-orange-400 pb-4">
+    {{ recipe.title }}
+  </h1>
+
+  <!-- 投稿者情報 -->
+  <p class="text-gray-600 mt-2 text-lg text-center">
+    投稿者: <span class="font-semibold">{{ recipe.user.user_name }}</span>
+  </p>
+
+  <!-- 画像セクション -->
+  {% if recipe.image %}
+  <div class="flex justify-center mt-6">
+    <img
+      src="{{ recipe.image.url }}"
+      alt="{{ recipe.title }}"
+      class="rounded-3xl shadow-lg border-4 border-gray-300 w-full max-w-2xl"
+    />
+  </div>
+  {% endif %}
+
+  <!-- お気に入りボタン -->
+  <div class="flex justify-center mt-6">
+    <form method="post" action="{% url 'recipes:toggle_favorite' pk=recipe.pk %}">
+      {% csrf_token %}
+      <button
+        type="submit"
+        class="text-lg font-semibold py-3 px-6 rounded-xl shadow-md transition mt-4 {% if is_favorite %} bg-yellow-500 text-white hover:bg-yellow-600 {% else %} bg-gray-400 text-white hover:bg-gray-500 {% endif %}"
+      >
+        {% if is_favorite %} ☆ お気に入り解除 {% else %} ★ お気に入りに追加 {% endif %}
+      </button>
+    </form>
+  </div>
+
+  <!-- レシピ説明 -->
+  {% if recipe.description %}
+  <p class="text-gray-600 mt-6 text-lg text-center italic">{{ recipe.description }}</p>
+  {% endif %}
+
+  <!-- コンテンツレイアウト: 作り方（左） & 材料（右） -->
+  <div class="grid md:grid-cols-2 gap-10 mt-10 ">
+    <!-- 作り方（左） -->
+    <div class="md:order-1" style="margin-left:50px">
+      <h2 class="text-2xl font-semibold text-gray-800 border-b-2 pb-2">作り方</h2>
+      <div class="bg-gray-100 p-6 rounded-2xl shadow-inner mt-4">
+        <ol class="text-lg text-gray-700 leading-relaxed list-decimal pl-6 space-y-2">
+          {% for step in recipe.instructions.splitlines %}
+          <li>{{ step }}</li>
+          {% endfor %}
+        </ol>
+      </div>
+    </div>
+
+    <!-- 材料リスト（右） -->
+    {% if ingredients_list %}
+    <div class="md:order-2" style="margin-left:50px; margin-right:50px ">
+      <h2 class="text-2xl font-semibold text-gray-800 border-b-2 pb-2">材料</h2>
+      <div class="bg-gray-100 p-6 rounded-2xl shadow-inner mt-4">
+        <ul class="text-gray-700 text-lg list-disc pl-6 space-y-1">
+          {% for ingredient in ingredients_list %}
+          <li>{{ ingredient }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+    {% endif %}
+  </div>
+  <!-- レビューセクション -->
+  <div class="mt-10" style="margin-left:50px; margin-right:50px ">
+    <h2 class="text-2xl font-semibold text-gray-800 border-b-2 pb-2">レビュー</h2>
+    <div class="bg-gray-100 p-6 rounded-2xl shadow-inner mt-4">
+      {% if reviews %}
+      <ul class="space-y-4">
+        {% for review in reviews %}
+        <li class="bg-white p-4 rounded-lg shadow">
+          <p class="text-gray-700 text-lg font-semibold">
+            {{ review.user.user_name }}（評価: {{ review.rating }}/5）
+          </p>
+          <p class="text-gray-600 mt-2">{{ review.comment }}</p>
+          <!-- レビュー削除ボタン（レビュー投稿者のみ） -->
+          {% if review.user == request.user %}
+          <form
+            method="post"
+            action="{% url 'recipes:review_delete' recipe_id=recipe.pk review_id=review.pk %}"
+          >
+            {% csrf_token %}
+            <button type="submit" class="text-red-500 hover:text-red-700 text-sm mt-2">
+              ✖️ 削除
+            </button>
+          </form>
+          {% endif %}
+        </li>
+        {% endfor %}
+      </ul>
+      {% else %}
+      <p class="text-gray-600 italic">まだレビューがありません。</p>
+      {% endif %}
+    </div>
+  </div>
+
+  <!-- アクションボタン -->
+  <div class="mt-10 grid grid-cols-2 md:grid-cols-4 gap-6" style="margin-left:50px; margin-right:50px ">
+    <a
+      href="{% url 'recipes:add_review' pk=recipe.pk %}"
+      class="text-lg bg-blue-600 text-white py-3 px-6 hover:bg-blue-700 transition shadow-md text-center rounded-xl"
+    >
+      レビュー投稿
+    </a>
+    <a
+      href="{% url 'recipes:recipe_edit' pk=recipe.pk %}"
+      class="text-lg bg-yellow-600 text-white py-3 px-6 hover:bg-yellow-700 transition shadow-md text-center rounded-xl"
+    >
+      レシピ編集
+    </a>
+    <a
+      href="{% url 'recipes:recipe_list' %}"
+      class="text-lg bg-green-600 text-white py-3 px-6 hover:bg-green-700 transition shadow-md text-center rounded-xl"
+    >
+      レシピ一覧
+    </a>
+    <a
+      href="{% url 'recipes:favorite_list' %}"
+      class="text-lg bg-orange-500 text-white py-3 px-6 hover:bg-orange-600 transition shadow-md text-center rounded-xl"
+    >
+      お気に入り一覧
+    </a>
+  </div>
+
+  <!-- ホームボタン -->
+  <div class="flex justify-center mt-10 mb-10">
+    <a href="{% url 'users:home' %}">
+      <button
+        class="text-lg bg-gray-600 text-white py-3 px-6 hover:bg-gray-700 transition shadow-md text-center rounded-xl"
+      >
+        ホーム
+      </button>
+    </a>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,45 @@
+{% extends 'base.html' %} {% load widget_tweaks %} {% block content %}
+
+<body
+  class="bg-gradient-to-br from-gray-100 to-gray-300 min-h-screen flex items-center justify-center py-10"
+>
+  <div class="bg-white max-w-2xl w-full p-8 shadow-2xl rounded-2xl border border-gray-300">
+    <h1 class="text-3xl font-bold text-center text-gray-800 border-b-4 border-orange-400 pb-4">
+      レシピ投稿
+    </h1>
+
+    <form method="post" enctype="multipart/form-data" class="mt-6 space-y-4">
+      {% csrf_token %}
+
+      <div>
+        <label for="id_title" class="block text-gray-700 font-medium">タイトル:</label>
+        {{ recipe_form.title|add_class:"border rounded-lg px-4 py-2 w-full" }}
+      </div>
+
+      <div>
+        <label for="id_instructions" class="block text-gray-700 font-medium">作り方:</label>
+        {{ recipe_form.instructions|add_class:"border rounded-lg px-4 py-2 w-full" }}
+      </div>
+
+      <div>
+        <label for="id_image" class="block text-gray-700 font-medium">イメージ:</label>
+        {{ recipe_form.image }}
+      </div>
+
+      <button
+        type="submit"
+        class="w-full bg-orange-500 text-white py-3 px-6 rounded-lg font-semibold hover:bg-orange-600 transition"
+      >
+        投稿する
+      </button>
+    </form>
+
+    <div class="flex justify-center mt-6">
+      <a href="{% url 'users:home' %}">
+        <button class="bg-gray-500 text-white py-2 px-6 rounded-lg hover:bg-gray-600 transition">
+          ホームへ戻る
+        </button>
+      </a>
+    </div>
+  </div>
+</body>

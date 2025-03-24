@@ -1,0 +1,32 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}My Recipe App{% endblock %}</title>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{% static 'css/styles.css' %}"
+    />
+  </head>
+  <body>
+    <header>
+      <h1>レシピ投稿</h1>
+      <nav>
+        <a href="{% url 'recipes:recipe_list' %}">レシピ一覧</a>
+        <a href="{% url 'recipes:recipe_search' %}">検索</a>
+        <a href="{% url 'recipes:recipe_create' %}">レシピを作成</a>
+        <a href="{% url 'users:profile' %}">プロフィール</a>
+        <a href="{% url 'users:logout' %}">ログアウト</a>
+      </nav>
+    </header>
+
+    <main>{% block content %}{% endblock %}</main>
+
+    <footer>
+      <p>© 2025 レシピアプリ</p>
+    </footer>
+  </body>
+</html>

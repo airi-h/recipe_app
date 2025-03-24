@@ -1,0 +1,17 @@
+{% extends "base.html" %} {% block content %}
+
+<h1>閲覧履歴一覧</h1>
+{% if histories %}
+<ul>
+  {% for history in histories %}
+  <li>
+    {{ history.viewed.at|date:"Y-m-d H:i" }}
+    <a href="{% url 'recipes:recipe_detail' pk=history.recipe.pk %}">
+      {{ history.recipe.title }}
+    </a>
+  </li>
+  {% endfor %}
+</ul>
+{% else %}
+<p>まだ閲覧履歴はありません。</p>
+{% endif %} {% endblock %}

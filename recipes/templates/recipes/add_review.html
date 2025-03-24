@@ -1,0 +1,41 @@
+{% extends "base.html" %} {% block content %}
+<div class="max-w-4xl mx-auto p-8 bg-white shadow-2xl rounded-2xl mt-10 border border-gray-200">
+  <h1
+    class="text-3xl font-extrabold text-gray-800 mb-6 text-center border-b-4 border-orange-400 pb-4"
+  >
+    レビューを投稿
+  </h1>
+
+  <form method="post" class="space-y-6">
+    {% csrf_token %}
+    <div class="space-y-4">
+      {{ form.non_field_errors }} {% for field in form %}
+      <div>
+        <label class="block text-gray-700 font-medium mb-2" for="{{ field.id_for_label }}">
+          {{ field.label }}
+        </label>
+        {{ field }} {% if field.errors %}
+        <p class="text-red-500 text-sm mt-2">{{ field.errors }}</p>
+        {% endif %}
+      </div>
+      {% endfor %}
+    </div>
+
+    <div class="flex justify-center space-x-4">
+      <button
+        type="submit"
+        class="bg-blue-500 text-white py-3 px-6 rounded-lg shadow-lg hover:bg-blue-600 hover:scale-105 transition-transform duration-200 flex items-center gap-2"
+      >
+        投稿
+      </button>
+
+      <a
+        href="{% url 'recipes:recipe_detail' pk=recipe_id %}"
+        class="bg-gray-500 text-white py-3 px-6 rounded-lg shadow-lg hover:bg-gray-600 hover:scale-105 transition-transform duration-200 flex items-center gap-2"
+      >
+        戻る
+      </a>
+    </div>
+  </form>
+</div>
+{% endblock %}

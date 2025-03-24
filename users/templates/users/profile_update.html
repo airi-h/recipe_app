@@ -1,0 +1,51 @@
+{% extends 'base.html' %} {% block content %}
+
+<div class="max-w-3xl mx-auto bg-white p-8 rounded-3xl shadow-2xl mt-10 border border-gray-300">
+  <!-- ヘッダー -->
+  <h2 class="text-3xl font-extrabold text-gray-800 text-center border-b-4 border-orange-400 pb-4">
+    プロフィール編集
+  </h2>
+
+  <!-- プロフィール編集フォーム -->
+  <form method="post" class="mt-6 space-y-6">
+    {% csrf_token %}
+    <div class="space-y-4">
+      {% for field in form %}
+      <div>
+        <label class="block text-lg font-semibold text-gray-700">{{ field.label }}</label>
+        <input
+          type="{% if field.name == 'password' %}password{% else %}text{% endif %}"
+          name="{{ field.name }}"
+          value="{{ field.value|default_if_none:'' }}"
+          class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none"
+        />
+        {% if field.errors %}
+        <p class="text-red-500 text-sm mt-1">{{ field.errors }}</p>
+        {% endif %}
+      </div>
+      {% endfor %}
+    </div>
+
+    <!-- 更新ボタン -->
+    <div class="text-center mt-6">
+      <button
+        type="submit"
+        class="bg-blue-600 text-white text-lg font-semibold py-3 px-6 rounded-xl shadow-md hover:bg-blue-700 transition"
+      >
+        更新
+      </button>
+    </div>
+  </form>
+
+  <!-- アクションボタン -->
+   <a href="{% url 'users:home' %}">
+      <button
+        class="bg-gray-600 text-white py-3 px-6 rounded-xl shadow-md hover:bg-gray-700 transition"
+      >
+        ホーム
+      </button>
+    </a>
+  </div>
+</div>
+
+{% endblock %}

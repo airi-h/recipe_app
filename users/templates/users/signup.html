@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+{% block content %}
+<div class="max-w-md mx-auto mt-10 p-6 bg-white rounded-lg shadow-lg">
+  <div class="text-2xl font-bold mb-6 text-center">新規登録</div>
+
+  <!-- 新規登録フォーム -->
+  <form method="post">
+    {% csrf_token %}
+    <input type="hidden" name="signup" value="1" />
+
+    <div>
+      <label class="block text-gray-700 font-semibold">ユーザー名</label>
+      {{ form.user_name|add_class:"border border-gray-300 rounded-lg px-4 py-2 w-full focus:ring focus:ring-blue-200" }}
+    </div>
+
+    <div class="mt-4">
+      <label class="block text-gray-700 font-semibold">メールアドレス</label>
+      {{ form.email|add_class:"border border-gray-300 rounded-lg px-4 py-2 w-full focus:ring focus:ring-blue-200" }}
+    </div>
+
+    <div class="mt-4">
+      <label class="block text-gray-700 font-semibold">パスワード</label>
+      {{ form.password1|add_class:"border border-gray-300 rounded-lg px-4 py-2 w-full focus:ring focus:ring-blue-200" }}
+    </div>
+
+    <div class="mt-4">
+      <label class="block text-gray-700 font-semibold">パスワード (確認)</label>
+      {{ form.password2|add_class:"border border-gray-300 rounded-lg px-4 py-2 w-full focus:ring focus:ring-blue-200" }}
+    </div>
+
+    <button type="submit" class="w-full bg-blue-500 text-white font-semibold py-2 px-4 rounded hover:bg-blue-700 transition duration-300 mt-4">
+      登録
+    </button>
+  </form>
+
+  <hr class="my-6" />
+
+  <div class="mt-6 text-center">
+    <a href="{% url 'users:login' %}" class="text-gray-500 hover:text-gray-800 underline">
+      すでにアカウントをお持ちの方はこちら
+    </a>
+  </div>
+</div>
+{% endblock %}

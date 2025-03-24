@@ -1,0 +1,30 @@
+{% extends 'base.html' %} {% block content %}
+<h2 class="text-3xl font-bold text-center mb-6" style="margin-top:50px">レシピ一覧</h2>
+
+{% if recipes %}
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-5xl mx-auto">
+  {% for recipe in recipes %}
+  <div class="bg-white p-6 rounded-lg shadow-md border hover:shadow-lg transition">
+    <h4 class="text-xl font-semibold mb-2">{{ recipe.title }}</h4>
+    <p class="text-gray-600 mb-4">{{ recipe.description|truncatewords:20 }}</p>
+
+    <div class="flex justify-between items-center mt-4">
+      <span class="text-sm text-gray-500">{{ recipe.created_at|date:"Y-m-d" }}</span>
+      <a href="{% url 'recipes:recipe_detail' recipe.pk %}">
+        <button class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+          詳細を見る
+        </button>
+      </a>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% else %}
+<p class="text-center text-gray-600">現在、レシピは登録されていません。</p>
+{% endif %}
+<div class="text-center mt-4 mb-4">
+  <a href="{% url 'users:home' %}">
+    <button class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-blue-700">ホーム</button>
+  </a>
+</div>
+{% endblock %}

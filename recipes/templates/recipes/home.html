@@ -1,0 +1,12 @@
+{% extends "base_generic.html" %} {% block content %}
+<h1>ようこそ！ {{ user.user_name }}さん!</h1>
+<p>レシピアプリへようこそ。 以下から操作を選んでください。</p>
+
+<ul>
+  <li><a href="{% url 'recipes:recipe_list' %}">レシピ一覧を見る</a></li>
+  <li><a href="{% url 'recipes:recipe_list' %}">新しいレシピを投稿する</a></li>
+  <li><a href="{% url 'recipes:recipe_list' %}">レシピを検索する</a></li>
+  <li><a href="{% url 'recipes:recipe_list' %}">プロフィール管理</a></li>
+  <li><a href="{% url 'recipes:recipe_list' %}">ログアウト</a></li>
+</ul>
+{% endblock %}

@@ -1,0 +1,94 @@
+{% extends 'base.html' %} {% block content %}
+
+<div class="max-w-4xl mx-auto bg-white p-8 rounded-3xl shadow-2xl mt-10 border border-gray-300">
+  <!-- ヘッダー -->
+  <h1 class="text-3xl font-extrabold text-gray-800 text-center border-b-4 border-orange-400 pb-4">
+    レシピ編集
+  </h1>
+
+  <!-- レシピ編集フォーム -->
+  <form method="post" enctype="multipart/form-data" class="mt-6 space-y-6">
+    {% csrf_token %}
+
+    <!-- タイトル -->
+    <div>
+      <label for="id_title" class="block text-lg font-semibold text-gray-700">タイトル</label>
+      {{ form.title }}
+    </div>
+
+    <!-- 画像 -->
+    <div>
+      <label for="id_image" class="block text-lg font-semibold text-gray-700">画像</label>
+      {{ form.image }}
+    </div>
+
+    <!-- 説明（作り方） -->
+    <div>
+      <label for="id_instructions" class="block text-lg font-semibold text-gray-700">作り方</label>
+      {{ form.instructions }}
+    </div>
+
+    <!-- 材料 -->
+    <div>
+      <label for="id_ingredients" class="block text-lg font-semibold text-gray-700">材料</label>
+      {{ form.ingredients }}
+    </div>
+
+    <!-- スタイル適用（フォームフィールドの見た目を統一） -->
+    <style>
+      textarea {
+        width: 100%;
+        min-height: 150px;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        font-size: 16px;
+      }
+
+      input {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        font-size: 16px;
+      }
+    </style>
+
+    <!-- 保存ボタン -->
+    <div class="text-center">
+      <button
+        type="submit"
+        class="bg-blue-600 text-white text-lg font-semibold py-3 px-6 rounded-xl shadow-md hover:bg-blue-700 transition"
+      >
+        保存
+      </button>
+    </div>
+  </form>
+
+  <!-- アクションボタン -->
+  <div class="flex justify-between mt-8">
+    <!-- 戻るボタン -->
+    <a href="{% url 'recipes:recipe_detail' pk=recipe.pk %}">
+      <button class="bg-gray-600 text-white py-3 px-6 rounded-xl hover:bg-gray-700 transition">
+        戻る
+      </button>
+    </a>
+
+    <!-- 削除ボタン -->
+    <form
+      method="post"
+      action="{% url 'recipes:recipe_delete' pk=recipe.pk %}"
+      onsubmit="return confirm('本当に削除しますか？');"
+    >
+      {% csrf_token %}
+      <button
+        type="submit"
+        class="bg-red-600 text-white py-3 px-6 rounded-xl hover:bg-red-700 transition"
+      >
+        レシピ削除
+      </button>
+    </form>
+  </div>
+</div>
+
+{% endblock %}

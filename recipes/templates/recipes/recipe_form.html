@@ -1,0 +1,73 @@
+{% load widget_tweaks %}
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>レシピ投稿</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body
+    class="bg-gradient-to-br from-gray-100 to-gray-300 min-h-screen flex items-center justify-center"
+  >
+    <div class="bg-white max-w-4xl w-full px-10 py-6 shadow-2xl rounded-2xl border border-gray-300">
+      <h1 class="text-3xl font-bold text-center text-gray-800 border-b-4 border-orange-400 pb-4">
+        レシピ投稿
+      </h1>
+
+      <form method="post" enctype="multipart/form-data" class="mt-6 space-y-6">
+        {% csrf_token %}
+
+        <div>
+          <label for="id_title" class="block text-gray-700 font-medium">📌 タイトル:</label>
+          {{ recipe_form.title|add_class:"border rounded-lg px-4 py-2 w-full" }}
+        </div>
+
+        <div>
+          <label for="id_instructions" class="block text-gray-700 font-medium">📄 作り方:</label>
+          {{ recipe_form.instructions|add_class:"border rounded-lg px-4 py-2 w-full" }}
+        </div>
+
+        <div>
+          <label for="id_ingredients" class="block text-gray-700 font-medium">🍳 材料:</label>
+          {% comment %} ここに材料のフォームを追加する {% endcomment %}
+          <textarea
+            id="id_ingredients"
+            name="ingredients"
+            class="w-full h-24 border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-orange-400 mt-2"
+            rows="6"
+            placeholder="例: にんじん, 玉ねぎ, じゃがいも"
+          >
+{{ recipe_form.ingredients.value|default_if_none:'' }}</textarea
+          >
+        </div>
+
+        <div>
+          <label for="id_image" class="block text-gray-700 font-medium">イメージ:</label>
+          {{ recipe_form.image }}
+        </div>
+          <!-- ボタンを縦並びにする（投稿ボタンを上、ホームボタンを下） -->
+        <div class="flex flex-col items-center mt-10 space-y-4">
+          <!-- 投稿ボタン -->
+          <button
+            type="submit"
+            class="text-lg bg-orange-600 text-white py-3 px-6 hover:bg-orange-700 transition shadow-md text-center rounded-xl"
+          >
+            投稿する
+          </button>
+
+          <!-- ホームボタン -->
+          <a href="{% url 'users:home' %}">
+            <button
+              type="button"
+              class="text-lg bg-gray-600 text-white py-3 px-6 hover:bg-gray-700 transition shadow-md text-center rounded-xl"
+            >
+              ホーム
+            </button>
+          </a>
+        </div>
+      </form>
+      </div>
+    </div>
+  </body>
+</html>
